@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  SecondViewController.swift
 //  budgetBuddy
 //
 //  Created by Noah McLean on 3/2/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class TransactionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
