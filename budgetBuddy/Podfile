@@ -1,0 +1,8 @@
+use_frameworks!
+
+workspace 'budgetBuddy.xcworkspace'
+
+target 'budgetBuddy' do
+	project 'budgetBuddy.xcodeproj'
+	pod 'CorePlot', '~> 2.3'
+end
