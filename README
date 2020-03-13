@@ -6,3 +6,6 @@ References:
 
 > Color Selector:
 >> Inspired by https://github.com/EthanStrider/ColorPickerExample/blob/master/ColorPickerExample/ColorPickerViewController.swift
+
+> determineTextColor method:
+>> https://stackoverflow.com/questions/1855884/determine-font-color-based-on-background-color

@@ -14,7 +14,7 @@ class BudgetViewController: UIViewController {
     @IBOutlet weak var containingView: CPTGraphHostingView!
     @IBOutlet weak var budgetGoals: UITableView!
     
-    let goals = DataManager.allData.goals
+    let globalData = DataManager.allData
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +31,25 @@ class BudgetViewController: UIViewController {
         // Specific details to get the popover to be the proper size
         if segue.identifier == "newGoal" {
             segue.destination.preferredContentSize = CGSize(width: 300, height: 200)
+            if let dest = segue.destination as? NewBudgetGoalViewController {
+                dest.delegate = self
+            }
             if let presentationController = segue.destination.popoverPresentationController { // 1
                 presentationController.delegate = self // 2
             }
+        }
+    }
+    
+    // Quick helper function for making text more visible
+    func determineTextColor(bgColor: UIColor) -> UIColor {
+        let rgb = bgColor.cgColor.components!
+        let luma = ((0.299 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]))
+        //let luma = 0.1
+        if luma > 0.5 {
+            return .black
+        }
+        else {
+            return .white
         }
     }
     
@@ -155,17 +171,33 @@ extension BudgetViewController: CPTPieChartDelegate, CPTPieChartDataSource {
 
 extension BudgetViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return globalData.goals.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "goal", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "goal", for: indexPath) as! BudgetTableViewCell
+        let goal = globalData.goals[indexPath.row]
+        let tcol = determineTextColor(bgColor: goal.color!)
+        cell.goalName.text = goal.category
+        cell.goalName.textColor = tcol
+        cell.amountLabel.text = "\(goal.amount)"
+        cell.amountLabel.textColor = tcol
+        cell.backgroundColor = goal.color
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO add selection action?
+        let cell = tableView.cellForRow(at: indexPath) as! BudgetTableViewCell
+        cell.setSelected(false, animated: true)
     }
     
     
+}
+
+// MARK: - New Goal Delegate Protocol
+extension BudgetViewController: NewGoalDelegate {
+    
+    func reloadGoals() {
+        budgetGoals.reloadData()
+    }
 }

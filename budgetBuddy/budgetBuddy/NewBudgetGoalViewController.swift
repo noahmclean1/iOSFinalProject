@@ -11,12 +11,26 @@ import UIKit
 class NewBudgetGoalViewController: UIViewController {
 
     @IBOutlet weak var colorCell: UIButton!
+    @IBOutlet weak var categoryName: UITextField!
+    @IBOutlet weak var amount: UITextField!
+    @IBOutlet weak var warningLabel: UILabel!
+    
+    let globalData = DataManager.allData
+    weak var delegate: NewGoalDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         colorCell.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
         colorCell.layer.borderWidth = 1
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        // Reset on reappearing!
+        categoryName.text = nil
+        amount.text = nil
+        colorCell.backgroundColor = .clear
+        warningLabel.text = nil
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -31,18 +45,31 @@ class NewBudgetGoalViewController: UIViewController {
         }
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    //
+    @IBAction func submitNewGoal(_ sender: Any) {
+        let category = categoryName.text
+        let amountString = amount.text
+        
+        if category != nil || amountString != nil {
+            let amt:Double? = Double(amountString!)
+            if let amt = amt {
+                if colorCell.backgroundColor == .clear {
+                    warningLabel.text = "Choose a color"
+                    return
+                }
+                let newGoal = Goal(category: category!, amount: amt, color: colorCell.backgroundColor!)
+                globalData.addGoal(goal: newGoal) //TODO
+                delegate?.reloadGoals()
+                self.dismiss(animated: true, completion: nil)
+                return
+            }
+        }
+        warningLabel.text = "Invalid values"
     }
-    */
 
 }
 
+// MARK: - Popover Extension
 extension NewBudgetGoalViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController,
                                    traitCollection: UITraitCollection) -> UIModalPresentationStyle {

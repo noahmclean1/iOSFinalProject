@@ -31,4 +31,7 @@ public class DataManager {
     var goals = [Goal]()
     var transactions = [Transaction]()
     
+    func addGoal(goal: Goal) {
+        goals.append(goal)
+    }
 }

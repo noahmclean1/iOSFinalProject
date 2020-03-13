@@ -12,3 +12,7 @@ import UIKit
 protocol ColorProtocol: class {
     func setColor(color: UIColor) -> Void
 }
+
+protocol NewGoalDelegate: class {
+    func reloadGoals() -> Void
+}
