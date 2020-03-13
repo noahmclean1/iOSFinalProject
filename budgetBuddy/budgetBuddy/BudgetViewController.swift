@@ -12,9 +12,29 @@ import CorePlot
 class BudgetViewController: UIViewController {
 
     @IBOutlet weak var containingView: CPTGraphHostingView!
+    @IBOutlet weak var budgetGoals: UITableView!
+    
+    let goals = DataManager.allData.goals
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        budgetGoals.delegate = self
+        budgetGoals.dataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        budgetGoals.reloadData()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Specific details to get the popover to be the proper size
+        if segue.identifier == "newGoal" {
+            segue.destination.preferredContentSize = CGSize(width: 300, height: 200)
+            if let presentationController = segue.destination.popoverPresentationController { // 1
+                presentationController.delegate = self // 2
+            }
+        }
     }
     
     // MARK: - Graph Initialization
@@ -97,6 +117,15 @@ class BudgetViewController: UIViewController {
     
 }
 
+// MARK: - Popover Delegate Extension
+
+extension BudgetViewController: UIPopoverPresentationControllerDelegate {
+    func adaptivePresentationStyle(for controller: UIPresentationController,
+                                   traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none // 3
+    }
+}
+
 // MARK: - Graph Extensions
 
 extension BudgetViewController: CPTPieChartDelegate, CPTPieChartDataSource {
@@ -122,3 +151,21 @@ extension BudgetViewController: CPTPieChartDelegate, CPTPieChartDataSource {
     }
 }
 
+// MARK: - TableView Extensions
+
+extension BudgetViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "goal", for: indexPath)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO add selection action?
+    }
+    
+    
+}

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		024AC038241AEAF400DC34DD /* DataStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024AC037241AEAF400DC34DD /* DataStructures.swift */; };
+		024AC03A241AF4E400DC34DD /* NewBudgetGoalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024AC039241AF4E400DC34DD /* NewBudgetGoalViewController.swift */; };
+		024AC03C241AF9CF00DC34DD /* ColorSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024AC03B241AF9CF00DC34DD /* ColorSelectorViewController.swift */; };
+		024AC040241AFC7200DC34DD /* colors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 024AC03F241AFC7200DC34DD /* colors.plist */; };
 		02BC91F9240DAEA300A4C124 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC91F8240DAEA300A4C124 /* AppDelegate.swift */; };
 		02BC91FB240DAEA300A4C124 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC91FA240DAEA300A4C124 /* SceneDelegate.swift */; };
 		02BC91FD240DAEA300A4C124 /* BudgetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC91FC240DAEA300A4C124 /* BudgetViewController.swift */; };
@@ -19,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		024AC037241AEAF400DC34DD /* DataStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStructures.swift; sourceTree = "<group>"; };
+		024AC039241AF4E400DC34DD /* NewBudgetGoalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewBudgetGoalViewController.swift; sourceTree = "<group>"; };
+		024AC03B241AF9CF00DC34DD /* ColorSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSelectorViewController.swift; sourceTree = "<group>"; };
+		024AC03F241AFC7200DC34DD /* colors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = colors.plist; path = ../../../../Downloads/colors.plist; sourceTree = "<group>"; };
 		02834D9A2417EEF4000DFE96 /* CorePlot.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CorePlot.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BC91F5240DAEA300A4C124 /* budgetBuddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = budgetBuddy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		02BC91F8240DAEA300A4C124 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -72,10 +80,14 @@
 				02BC91FA240DAEA300A4C124 /* SceneDelegate.swift */,
 				02BC91FC240DAEA300A4C124 /* BudgetViewController.swift */,
 				02BC91FE240DAEA300A4C124 /* TransactionViewController.swift */,
+				024AC037241AEAF400DC34DD /* DataStructures.swift */,
 				02BC920E240DAF6600A4C124 /* TrendViewController.swift */,
+				024AC03B241AF9CF00DC34DD /* ColorSelectorViewController.swift */,
+				024AC039241AF4E400DC34DD /* NewBudgetGoalViewController.swift */,
 				02BC9200240DAEA300A4C124 /* Main.storyboard */,
 				02BC9203240DAEA400A4C124 /* Assets.xcassets */,
 				02BC9205240DAEA400A4C124 /* LaunchScreen.storyboard */,
+				024AC03F241AFC7200DC34DD /* colors.plist */,
 				02BC9208240DAEA400A4C124 /* Info.plist */,
 			);
 			path = budgetBuddy;
@@ -159,6 +171,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				024AC040241AFC7200DC34DD /* colors.plist in Resources */,
 				02BC9207240DAEA400A4C124 /* LaunchScreen.storyboard in Resources */,
 				02BC9204240DAEA400A4C124 /* Assets.xcassets in Resources */,
 				02BC9202240DAEA300A4C124 /* Main.storyboard in Resources */,
@@ -215,8 +228,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				02BC91FF240DAEA300A4C124 /* TransactionViewController.swift in Sources */,
+				024AC03C241AF9CF00DC34DD /* ColorSelectorViewController.swift in Sources */,
+				024AC03A241AF4E400DC34DD /* NewBudgetGoalViewController.swift in Sources */,
 				02BC91FD240DAEA300A4C124 /* BudgetViewController.swift in Sources */,
 				02BC920F240DAF6600A4C124 /* TrendViewController.swift in Sources */,
+				024AC038241AEAF400DC34DD /* DataStructures.swift in Sources */,
 				02BC91F9240DAEA300A4C124 /* AppDelegate.swift in Sources */,
 				02BC91FB240DAEA300A4C124 /* SceneDelegate.swift in Sources */,
 			);
