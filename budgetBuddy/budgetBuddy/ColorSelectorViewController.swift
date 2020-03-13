@@ -9,8 +9,8 @@
 import UIKit
 
 class ColorSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    //https://github.com/EthanStrider/ColorPickerExample/blob/master/ColorPickerExample/ColorPickerViewController.swift
-     // TODO cite this in the README
+
+    @IBOutlet weak var collectionColors: UICollectionView!
     
     var colors = [UIColor]()
     var tag = 0
@@ -24,6 +24,11 @@ class ColorSelectorViewController: UIViewController, UICollectionViewDelegate, U
         for colString in savedArray {
             colors.append(htmlToColor(color: colString))
         }
+        print(colors.count)
+        
+        // Set up the CollectionView
+        collectionColors.delegate = self
+        collectionColors.dataSource = self
     }
     
     // Helper to easily turn a 6-digit color hex to UIColor
@@ -54,13 +59,20 @@ class ColorSelectorViewController: UIViewController, UICollectionViewDelegate, U
    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "color", for: indexPath)
+        if tag < colors.count {
+            cell.tag = tag
+            cell.backgroundColor = colors[tag]
+            tag += 1
+        }
+        cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: 25, height: 25)
         return cell
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let cell = collectionView.cellForItem(at: indexPath)
+        print("Selected: \(cell?.backgroundColor ?? .clear)")
     }
 
     /*
