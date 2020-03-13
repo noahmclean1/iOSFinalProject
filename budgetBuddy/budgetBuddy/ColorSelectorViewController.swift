@@ -11,9 +11,11 @@ import UIKit
 class ColorSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     @IBOutlet weak var collectionColors: UICollectionView!
+    @IBOutlet weak var flowlayout: UICollectionViewFlowLayout!
     
     var colors = [UIColor]()
     var tag = 0
+    weak var delegate: ColorProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,11 +26,15 @@ class ColorSelectorViewController: UIViewController, UICollectionViewDelegate, U
         for colString in savedArray {
             colors.append(htmlToColor(color: colString))
         }
-        print(colors.count)
         
         // Set up the CollectionView
         collectionColors.delegate = self
         collectionColors.dataSource = self
+        flowlayout.minimumLineSpacing = 1
+        flowlayout.minimumInteritemSpacing = 1
+        flowlayout.estimatedItemSize = CGSize(width: 25, height: 20)
+        flowlayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 5, right: 5)
+        //flowlayout.itemSize = CGSize(width: 25, height: 25)
     }
     
     // Helper to easily turn a 6-digit color hex to UIColor
@@ -64,15 +70,17 @@ class ColorSelectorViewController: UIViewController, UICollectionViewDelegate, U
             cell.backgroundColor = colors[tag]
             tag += 1
         }
-        cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: 25, height: 25)
+        //cell.frame = CGRect(x: cell.frame.origin.x, y: cell.frame.origin.y, width: 25, height: 25)
+        
         return cell
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath)
-        print("Selected: \(cell?.backgroundColor ?? .clear)")
+        let cell = collectionView.cellForItem(at: indexPath)!
+        delegate?.setColor(color: cell.backgroundColor!)
+        //print("Selected: \(cell?.backgroundColor ?? .clear)")
     }
 
     /*

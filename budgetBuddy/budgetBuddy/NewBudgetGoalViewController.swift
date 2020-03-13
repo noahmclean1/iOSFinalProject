@@ -10,15 +10,21 @@ import UIKit
 
 class NewBudgetGoalViewController: UIViewController {
 
+    @IBOutlet weak var colorCell: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        colorCell.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
+        colorCell.layer.borderWidth = 1
         // Do any additional setup after loading the view.
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "colorPick" {
-            segue.destination.preferredContentSize = CGSize(width: 300, height: 500)
+            segue.destination.preferredContentSize = CGSize(width: 300, height: 450)
+            if let dest = segue.destination as? ColorSelectorViewController {
+                dest.delegate = self
+            }
             if let presentationController = segue.destination.popoverPresentationController { // 1
                 presentationController.delegate = self // 2
             }
@@ -41,5 +47,13 @@ extension NewBudgetGoalViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController,
                                    traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none // 3
+    }
+}
+
+// MARK: - Color Picker Protocol
+extension NewBudgetGoalViewController: ColorProtocol {
+    
+    func setColor(color: UIColor) {
+        colorCell.backgroundColor = color
     }
 }
