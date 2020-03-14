@@ -49,7 +49,7 @@ class BudgetViewController: UIViewController {
     }
     
     // MARK: - Misc. Helper Functions
-    
+
     // Quick helper function for making text more visible
     func determineTextColor(bgColor: UIColor) -> UIColor {
         let rgb = bgColor.cgColor.components!

@@ -37,21 +37,7 @@ class ColorSelectorViewController: UIViewController, UICollectionViewDelegate, U
         //flowlayout.itemSize = CGSize(width: 25, height: 25)
     }
     
-    // Helper to easily turn a 6-digit color hex to UIColor
-    func htmlToColor(color: String) -> UIColor {
-        let red = String(color.prefix(2))
-        let green = String(color.prefix(4).suffix(2))
-        let blue = String(color.suffix(2))
-        
-        var rval:UInt64 = 0
-        var gval:UInt64 = 0
-        var bval:UInt64 = 0
-        Scanner(string: red).scanHexInt64(&rval)
-        Scanner(string: green).scanHexInt64(&gval)
-        Scanner(string: blue).scanHexInt64(&bval)
-        
-        return UIColor(displayP3Red: CGFloat(rval)/255.0, green: CGFloat(gval)/255.0, blue: CGFloat(bval)/255.0, alpha: 1.0)
-    }
+    
     
     // MARK: - Collection View Methods
     
