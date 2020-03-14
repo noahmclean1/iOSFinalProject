@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		024121A8241C256600C78EFB /* colors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 024121AA241C256600C78EFB /* colors.plist */; };
+		020F2213241D572600439B16 /* colors.plist in Resources */ = {isa = PBXBuildFile; fileRef = 020F2212241D572600439B16 /* colors.plist */; };
 		024121AC241C2A6600C78EFB /* InterfacingProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024121AB241C2A6600C78EFB /* InterfacingProtocols.swift */; };
 		0244F994241C3AA10037AB70 /* BudgetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0244F993241C3AA10037AB70 /* BudgetTableViewCell.swift */; };
 		0244F996241C3C6E0037AB70 /* GoalDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0244F995241C3C6E0037AB70 /* GoalDetailViewController.swift */; };
@@ -26,7 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		024121A9241C256600C78EFB /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/colors.plist; sourceTree = "<group>"; };
+		020F2212241D572600439B16 /* colors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = colors.plist; sourceTree = "<group>"; };
 		024121AB241C2A6600C78EFB /* InterfacingProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfacingProtocols.swift; sourceTree = "<group>"; };
 		0244F993241C3AA10037AB70 /* BudgetTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetTableViewCell.swift; sourceTree = "<group>"; };
 		0244F995241C3C6E0037AB70 /* GoalDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalDetailViewController.swift; sourceTree = "<group>"; };
@@ -94,8 +94,8 @@
 				024AC03B241AF9CF00DC34DD /* ColorSelectorViewController.swift */,
 				024AC039241AF4E400DC34DD /* NewBudgetGoalViewController.swift */,
 				02BC9200240DAEA300A4C124 /* Main.storyboard */,
+				020F2212241D572600439B16 /* colors.plist */,
 				02BC9203240DAEA400A4C124 /* Assets.xcassets */,
-				024121AA241C256600C78EFB /* colors.plist */,
 				02BC9205240DAEA400A4C124 /* LaunchScreen.storyboard */,
 				02BC9208240DAEA400A4C124 /* Info.plist */,
 			);
@@ -180,7 +180,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				024121A8241C256600C78EFB /* colors.plist in Resources */,
+				020F2213241D572600439B16 /* colors.plist in Resources */,
 				02BC9207240DAEA400A4C124 /* LaunchScreen.storyboard in Resources */,
 				02BC9204240DAEA400A4C124 /* Assets.xcassets in Resources */,
 				02BC9202240DAEA300A4C124 /* Main.storyboard in Resources */,
@@ -253,15 +253,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		024121AA241C256600C78EFB /* colors.plist */ = {
-			isa = PBXVariantGroup;
-			children = (
-				024121A9241C256600C78EFB /* Base */,
-			);
-			name = colors.plist;
-			path = ../../../../.Trash;
-			sourceTree = "<group>";
-		};
 		02BC9200240DAEA300A4C124 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
