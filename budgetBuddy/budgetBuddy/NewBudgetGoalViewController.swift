@@ -22,7 +22,9 @@ class NewBudgetGoalViewController: UIViewController {
         super.viewDidLoad()
         colorCell.layer.borderColor = CGColor(srgbRed: 0, green: 0, blue: 0, alpha: 1)
         colorCell.layer.borderWidth = 1
-        // Do any additional setup after loading the view.
+        
+        categoryName.delegate = self
+        amount.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,15 +55,26 @@ class NewBudgetGoalViewController: UIViewController {
         if category != nil || amountString != nil {
             let amt:Double? = Double(amountString!)
             if let amt = amt {
+                if amt <= 0.0 {
+                    warningLabel.text = "Invalid amount"
+                    return
+                }
+                
                 if colorCell.backgroundColor == .clear {
                     warningLabel.text = "Choose a color"
                     return
                 }
-                let newGoal = Goal(category: category!, amount: amt, color: colorCell.backgroundColor!)
-                globalData.addGoal(goal: newGoal) //TODO
-                delegate?.reloadGoals()
-                self.dismiss(animated: true, completion: nil)
-                return
+                let newGoal = Goal(category: category!, amount: amt, color: colorCell.backgroundColor!, spentSoFar: 0.0)
+                
+                if globalData.addGoal(goal: newGoal) {
+                    delegate?.reloadGoals()
+                    self.dismiss(animated: true, completion: nil)
+                    return
+                }
+                else {
+                    warningLabel.text = "Goal already exists"
+                    return
+                }
             }
         }
         warningLabel.text = "Invalid values"
@@ -74,6 +87,15 @@ extension NewBudgetGoalViewController: UIPopoverPresentationControllerDelegate {
     func adaptivePresentationStyle(for controller: UIPresentationController,
                                    traitCollection: UITraitCollection) -> UIModalPresentationStyle {
         return .none // 3
+    }
+}
+
+// MARK: - TextField Delegate Extension
+extension NewBudgetGoalViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
     }
 }
 
