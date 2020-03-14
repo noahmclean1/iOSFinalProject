@@ -105,12 +105,21 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
-    @IBAction func deleteGoal(_ sender: Any) {
+    @IBAction func deletePressed(_ sender: Any) {
+        
+        let alert = UIAlertController(title: goal!.category, message: "Are you sure you want to delete this goal & category? This will also delete all related transactions", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Delete", style: .default, handler: deleteCurrentGoal))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func deleteCurrentGoal(_ alert: UIAlertAction) {
         globalData.deleteGoal(category: goal!.category)
         deleting = true
         delegate?.reloadGoals()
         self.dismiss(animated: true, completion: nil)
     }
+    
 }
 
 

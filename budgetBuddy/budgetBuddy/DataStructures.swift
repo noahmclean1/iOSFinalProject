@@ -41,6 +41,7 @@ class Transaction {
 
 // MARK: - Extra Helper Functions
 
+// Turns UIColors to strings for easy storage
 func colorToString(color: UIColor) -> String {
     guard let rgb = color.cgColor.components, rgb.count >= 3 else {
         return ""
@@ -49,11 +50,6 @@ func colorToString(color: UIColor) -> String {
     let r = Float(rgb[0])
     let g = Float(rgb[1])
     let b = Float(rgb[2])
-    
-    print("COLOR")
-    print(r)
-    print(g)
-    print(b)
     
     return String(format: "%02lX%02lX%02lX", lroundf(r * 255), lroundf(g * 255), lroundf(b * 255))
 }
@@ -71,16 +67,11 @@ func htmlToColor(color: String) -> UIColor {
     Scanner(string: green).scanHexInt64(&gval)
     Scanner(string: blue).scanHexInt64(&bval)
     
-    print("HTML")
-    print(rval)
-    print(gval)
-    print(bval)
-    
     return UIColor(cgColor: CGColor(srgbRed: CGFloat(rval)/255.0, green: CGFloat(gval)/255.0, blue: CGFloat(bval)/255.0, alpha: 1.0))
 }
 
 // MARK: - Global Data Manager
-// This will be where we keep our user Transaction & Budget Goal data
+// This is where we keep our user Transaction & Budget Goal data
 public class DataManager {
     
     // We're sharing this data across all VCs
@@ -107,7 +98,6 @@ public class DataManager {
             savingList.append(goalFormat)
         }
         
-        print(savingList)
         defaults.set(savingList, forKey: "goals")
         
         // TODO save Transactions
@@ -123,8 +113,7 @@ public class DataManager {
             // We can safely ignore the validity since we know this will always be true
             _ = DataManager.allData.addGoal(goal: newGoal)
         }
-        
-        print(goals[0].color!)
+                
         // TODO load Transactions
     }
     
