@@ -32,13 +32,23 @@ class BudgetViewController: UIViewController {
         if segue.identifier == "newGoal" {
             segue.destination.preferredContentSize = CGSize(width: 300, height: 200)
             if let dest = segue.destination as? NewBudgetGoalViewController {
+                // Necessary protocol for handling new goal additions
                 dest.delegate = self
             }
             if let presentationController = segue.destination.popoverPresentationController { // 1
                 presentationController.delegate = self // 2
             }
         }
+        
+        else if segue.identifier == "showGoalDetail" {
+            let dest = segue.destination as! GoalDetailViewController
+            let cell = sender as! BudgetTableViewCell
+            dest.goal = cell.goal!
+            dest.delegate = self
+        }
     }
+    
+    // MARK: - Misc. Helper Functions
     
     // Quick helper function for making text more visible
     func determineTextColor(bgColor: UIColor) -> UIColor {
@@ -178,16 +188,21 @@ extension BudgetViewController: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "goal", for: indexPath) as! BudgetTableViewCell
         let goal = globalData.goals[indexPath.row]
         let tcol = determineTextColor(bgColor: goal.color!)
+        
+        cell.goal = goal
         cell.goalName.text = goal.category
         cell.goalName.textColor = tcol
         cell.amountLabel.text = "\(goal.amount)"
         cell.amountLabel.textColor = tcol
         cell.backgroundColor = goal.color
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let cell = tableView.cellForRow(at: indexPath) as! BudgetTableViewCell
+        
+        // Just to neaten up
         cell.setSelected(false, animated: true)
     }
     
@@ -198,6 +213,8 @@ extension BudgetViewController: UITableViewDelegate, UITableViewDataSource {
 extension BudgetViewController: NewGoalDelegate {
     
     func reloadGoals() {
+        // We need to reload basically the whole VC when goals are changed
+        // TODO add donut chart reloading
         budgetGoals.reloadData()
     }
 }

@@ -13,6 +13,7 @@ struct Goal {
     let category: String
     let amount: Double
     let color: UIColor?
+    var notes: String?
 }
 
 struct Transaction {
@@ -33,5 +34,13 @@ public class DataManager {
     
     func addGoal(goal: Goal) {
         goals.append(goal)
+    }
+    
+    func updateGoal(category: String, goal: Goal) {
+        
+    }
+    
+    func deleteGoal(category: String) {
+        goals = goals.filter { $0.category != category}
     }
 }

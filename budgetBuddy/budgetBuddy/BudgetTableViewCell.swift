@@ -13,6 +13,8 @@ class BudgetTableViewCell: UITableViewCell {
     @IBOutlet weak var goalName: UILabel!
     @IBOutlet weak var amountLabel: UILabel!
     
+    var goal: Goal?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
