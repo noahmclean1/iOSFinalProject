@@ -20,10 +20,12 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var spentSoFar: UILabel!
     @IBOutlet weak var percentage: UILabel!
     @IBOutlet weak var editTotalGoal: UITextField!
+    @IBOutlet weak var editName: UITextField!
     
     var goal: Goal?
     var deleting = false
     var delegate: NewGoalDelegate?
+    var originalCat: String?
     
     let globalData = DataManager.allData
     
@@ -46,7 +48,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
             spentSoFar.textColor = .black
         }
         
-        // Allow for stealthy editing for amounts
+        // Allow for stealthy editing for amounts & name
         editTotalGoal.text = "\(goal!.amount)"
         editTotalGoal.delegate = self
         totalGoal.isUserInteractionEnabled = true
@@ -55,10 +57,22 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         tapGesture.numberOfTapsRequired = 1
         totalGoal.addGestureRecognizer(tapGesture)
         
+        editName.text = "\(goal!.category)"
+        editName.delegate = self
+        bigName.isUserInteractionEnabled = true
+        let bSelector : Selector = Selector(("tapBigName"))
+        let bigTapGesture = UITapGestureRecognizer(target: self, action: bSelector)
+        bigTapGesture.numberOfTapsRequired = 1
+        bigName.addGestureRecognizer(bigTapGesture)
+        
         // Initialize textview for notes
         goalNotes.delegate = self
         goalNotes.text = goal!.notes ?? defaultNote
         deleting = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        originalCat = goal!.category
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -72,15 +86,17 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
             goal!.notes = goalNotes.text
         }
         
-        globalData.updateGoal(category: goal!.category, goal: goal!)
+        // OriginalCat is the name before any change, while the goal has the new category name
+        globalData.updateGoal(category: originalCat!, goal: goal!)
         delegate?.reloadGoals()
     }
     
     // Callable helper for when we change relevant values
     func updatePageValues() {
-        totalGoal.text = "\(goal!.amount)"
-        spentSoFar.text = "\(goal!.spentSoFar)"
-        percentage.text = "\(goal!.spentSoFar/goal!.amount)"
+        totalGoal.text = "$\(goal!.amount)"
+        spentSoFar.text = "$\(goal!.spentSoFar)"
+        percentage.text = "\(goal!.spentSoFar/goal!.amount*100.0)%"
+        bigName.text = "\(goal!.category)"
         editTotalGoal.isHidden = true
     }
     
@@ -89,19 +105,36 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
         editTotalGoal.isHidden = false
     }
     
+    @objc func tapBigName() {
+        bigName.isHidden = true
+        editName.isHidden = false
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        editTotalGoal.isHidden = true
-        totalGoal.isHidden = false
-        if let txt = editTotalGoal.text {
-            let amt:Double? = Double(txt)
-            if let amt = amt {
-                if amt > 0.0 {
-                    goal!.amount = amt
-                    updatePageValues()
-                    textField.resignFirstResponder()
+        if textField == editTotalGoal {
+            editTotalGoal.isHidden = true
+            totalGoal.isHidden = false
+            if let txt = editTotalGoal.text {
+                let amt:Double? = Double(txt)
+                if let amt = amt {
+                    if amt > 0.0 {
+                        goal!.amount = amt
+                        updatePageValues()
+                        textField.resignFirstResponder()
+                    }
                 }
             }
         }
+        else if textField == editName {
+            editName.isHidden = true
+            bigName.isHidden = false
+            if let txt = editName.text {
+                goal!.category = txt
+                updatePageValues()
+                textField.resignFirstResponder()
+            }
+        }
+        
         return true
     }
     

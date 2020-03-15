@@ -16,3 +16,9 @@ protocol ColorProtocol: class {
 protocol NewGoalDelegate: class {
     func reloadGoals() -> Void
 }
+
+protocol NewTransDelegate: class {
+    func reloadTrans() -> Void
+}
+
+

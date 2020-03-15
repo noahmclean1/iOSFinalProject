@@ -25,7 +25,17 @@ class Goal {
     }
 }
 
-class Transaction {
+class Transaction: Equatable {
+    
+    static func == (lhs: Transaction, rhs: Transaction) -> Bool {
+        return (
+            lhs.amount == rhs.amount &&
+                lhs.category == rhs.category &&
+                lhs.date == rhs.date &&
+                lhs.location == rhs.location
+        )
+    }
+    
     var amount: Double
     var category: String
     let date: Date
@@ -86,35 +96,63 @@ public class DataManager {
         let defaults = UserDefaults.standard
         
         var savingList = [[String : Any]]()
+        var tList = [[String : Any]]()
         
         for goal in goals {
            let goalFormat = [
             "category" : goal.category,
             "amount" : goal.amount,
             "notes" : goal.notes ?? "",
-            "color" : colorToString(color: goal.color!),
-            "spentSoFar" : goal.spentSoFar
+            "color" : colorToString(color: goal.color!)
             ] as [String : Any]
             savingList.append(goalFormat)
         }
         
         defaults.set(savingList, forKey: "goals")
         
-        // TODO save Transactions
+        for t in transactions {
+            let tdict = [
+                "amount": t.amount,
+                "category": t.category,
+                "date": t.date,
+                "location": t.location ?? ""
+                ] as [String : Any]
+            tList.append(tdict)
+        }
+        
+        defaults.set(tList, forKey: "transactions")
     }
     
     func loadData() {
         let defaults = UserDefaults.standard
         
-        let goalArray = defaults.array(forKey: "goals") as! [[String : Any]]
-        for goal in goalArray {
-            let newGoal = Goal(category: goal["category"] as! String, amount: goal["amount"] as! Double, color: htmlToColor(color: goal["color"] as! String), spentSoFar: goal["spentSoFar"] as! Double)
+        var goalArray = defaults.array(forKey: "goals") as? [[String : Any]]
+        var tArray = defaults.array(forKey: "transactions") as? [[String : Any]]
+        
+        if goalArray == nil {
+            goalArray = [[String : Any]]()
+        }
+        if tArray == nil {
+            tArray = [[String : Any]]()
+        }
+        
+        // Set the spending so far to be 0 and add in transactions later
+        for goal in goalArray! {
+            let newGoal = Goal(category: goal["category"] as! String, amount: goal["amount"] as! Double, color: htmlToColor(color: goal["color"] as! String), spentSoFar: 0.0)
+            if goal["notes"] as! String != "" {
+                newGoal.notes = goal["notes"] as? String
+            }
             
             // We can safely ignore the validity since we know this will always be true
             _ = DataManager.allData.addGoal(goal: newGoal)
         }
                 
-        // TODO load Transactions
+        // Add each transaction using our standard method
+        for trans in tArray! {
+            let newT = Transaction(amount: trans["amount"] as! Double, category: trans["category"] as! String, date: trans["date"] as! Date, location: trans["location"] as? String)
+            
+            DataManager.allData.addTrans(trans: newT)
+        }
     }
     
     // MARK: - Goal Modification
@@ -131,14 +169,20 @@ public class DataManager {
     
     func updateGoal(category: String, goal: Goal) {
         for oldGoal in goals {
-            if oldGoal.category == category {
+            if oldGoal.category == goal.category {
                 totalBudget -= oldGoal.amount
                 totalBudget += goal.amount
                 oldGoal.amount = goal.amount
                 oldGoal.notes = goal.notes
                 
-                if oldGoal.category != goal.category {
+                if oldGoal.category != category {
                     // Change any relevant transactions TODO
+                    for t in transactions {
+                        if t.category == category {
+                            t.category = goal.category
+                        }
+                    }
+                    
                     
                     oldGoal.category = goal.category
                 }
@@ -152,7 +196,10 @@ public class DataManager {
             // Do specific work to account for removal
             if goal.category == category {
                 totalBudget -= goal.amount
-                // Remove transactions TODO
+                
+                transactions = transactions.filter { $0.category != category }
+                
+                break
             }
         }
         // Actually delete the goal
@@ -160,4 +207,29 @@ public class DataManager {
     }
     
     // MARK: - Transaction Modification
+    
+    func addTrans(trans: Transaction) {
+        transactions.append(trans)
+        for goal in goals {
+            if goal.category == trans.category {
+                goal.spentSoFar += trans.amount
+                
+                break
+            }
+        }
+    }
+    
+    func removeTrans(trans: Transaction) {
+        for goal in goals {
+            // Alter any tied-up data
+            if goal.category == trans.category {
+                goal.spentSoFar -= trans.amount
+                
+                break
+            }
+        }
+        
+        // Fully remove the transaction
+        transactions = transactions.filter { $0 != trans }
+    }
 }

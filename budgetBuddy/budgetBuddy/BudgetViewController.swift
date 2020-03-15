@@ -48,21 +48,6 @@ class BudgetViewController: UIViewController {
         }
     }
     
-    // MARK: - Misc. Helper Functions
-
-    // Quick helper function for making text more visible
-    func determineTextColor(bgColor: UIColor) -> UIColor {
-        let rgb = bgColor.cgColor.components!
-        let luma = ((0.299 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]))
-        //let luma = 0.1
-        if luma > 0.5 {
-            return .black
-        }
-        else {
-            return .white
-        }
-    }
-    
     // MARK: - Graph Initialization
     
     override func viewDidLayoutSubviews() {
@@ -99,10 +84,12 @@ class BudgetViewController: UIViewController {
         textStyle.fontSize = 16.0
         textStyle.textAlignment = .center
 
+        /*
         // 3 - Set graph title and text style
         graph.title = "THIS WILL BE A TITLE IF NEEDED"
         graph.titleTextStyle = textStyle
         graph.titlePlotAreaFrameAnchor = CPTRectAnchor.top
+         */
 
     }
 
@@ -114,7 +101,7 @@ class BudgetViewController: UIViewController {
         pieChart.delegate = self
         pieChart.dataSource = self
         pieChart.pieRadius = (min(containingView.bounds.size.width, containingView.bounds.size.height) * 0.7) / 2
-        pieChart.identifier = NSString(string: graph.title!)
+        pieChart.identifier = NSString(string: "Budget")
         pieChart.startAngle = CGFloat(Double.pi / 4)
         pieChart.sliceDirection = .clockwise
         pieChart.labelOffset = -0.6 * pieChart.pieRadius
@@ -143,6 +130,20 @@ class BudgetViewController: UIViewController {
     
 }
 
+// MARK: - Misc. Helper Functions
+
+// Quick helper function for making text more visible
+func determineTextColor(bgColor: UIColor) -> UIColor {
+    let rgb = bgColor.cgColor.components!
+    let luma = ((0.299 * rgb[0]) + (0.587 * rgb[1]) + (0.114 * rgb[2]))
+    //let luma = 0.1
+    if luma > 0.5 {
+        return .black
+    }
+    else {
+        return .white
+    }
+}
 
 
 // MARK: - Popover Delegate Extension
@@ -158,20 +159,19 @@ extension BudgetViewController: UIPopoverPresentationControllerDelegate {
 
 extension BudgetViewController: CPTPieChartDelegate, CPTPieChartDataSource {
     func numberOfRecords(for plot: CPTPlot) -> UInt {
-        return 3 // TODO Placeholder
+        return UInt(globalData.goals.count)
     }
     
     func number(for plot: CPTPlot, field fieldEnum: UInt, record idx: UInt) -> Any? {
-        return 10 // TODO Placeholder
+        return globalData.goals[Int(idx)].amount
     }
     
     func dataLabel(for plot: CPTPlot, record idx: UInt) -> CPTLayer? {
-        let val = 10.0
-        return CPTTextLayer(text: "Word: \(val)")
+        return CPTTextLayer(text: "\(globalData.goals[Int(idx)].category)")
     }
       
     func sliceFill(for pieChart: CPTPieChart, record idx: UInt) -> CPTFill? {
-        return CPTFill(color: CPTColor(componentRed: 0.92, green: 0.28, blue: 0.25, alpha: 1))
+        return CPTFill(color: CPTColor(uiColor: globalData.goals[Int(idx)].color!))
     }
       
     func legendTitle(for pieChart: CPTPieChart, record idx: UInt) -> String? {
@@ -194,7 +194,7 @@ extension BudgetViewController: UITableViewDelegate, UITableViewDataSource {
         cell.goal = goal
         cell.goalName.text = goal.category
         cell.goalName.textColor = tcol
-        cell.amountLabel.text = "\(goal.amount)"
+        cell.amountLabel.text = "$\(goal.amount)"
         cell.amountLabel.textColor = tcol
         cell.backgroundColor = goal.color
         
@@ -217,6 +217,7 @@ extension BudgetViewController: NewGoalDelegate {
     func reloadGoals() {
         // We need to reload basically the whole VC when goals are changed
         // TODO add donut chart reloading
+        containingView.hostedGraph!.reloadData()
         budgetGoals.reloadData()
     }
 }

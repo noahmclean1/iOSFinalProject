@@ -1,17 +1,16 @@
 //
-//  TrendViewController.swift
+//  EditTransactionViewController.swift
 //  budgetBuddy
 //
-//  Created by Noah McLean on 3/2/20.
+//  Created by Noah McLean on 3/15/20.
 //  Copyright © 2020 Noah McLean. All rights reserved.
 //
 
 import UIKit
 
-class TrendViewController: UIViewController {
+class EditTransactionViewController: UIViewController {
 
-    @IBOutlet weak var bigTitle: UILabel!
-    @IBOutlet weak var catPicker: UIPickerView!
+    var delegate: NewTransDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
