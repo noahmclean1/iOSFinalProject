@@ -237,11 +237,17 @@ public class DataManager {
         
         // Insert transaction into proper bucket-list
         if let tList = transactions[dateStamp] {
+            var placed = false
             for (index,t) in tList.enumerated() {
-                if t.date > trans.date {
+                if t.date >= trans.date {
                     ind = index
+                    placed = true
                     break
                 }
+            }
+            
+            if !placed {
+                ind = tList.count
             }
             
         }

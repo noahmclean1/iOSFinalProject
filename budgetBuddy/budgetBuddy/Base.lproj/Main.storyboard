@@ -408,7 +408,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MiZ-T2-Efc">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MiZ-T2-Efc" customClass="CPTGraphHostingView">
                                 <rect key="frame" x="10" y="86" width="392" height="270"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -506,6 +506,7 @@
                     <tabBarItem key="tabBarItem" title="" image="arrow.right.arrow.left.square" catalog="system" id="cPa-gy-q4n"/>
                     <connections>
                         <outlet property="dateLabel" destination="hCY-BL-voG" id="cKN-Te-GRj"/>
+                        <outlet property="hostView" destination="MiZ-T2-Efc" id="Lj8-WY-W6a"/>
                         <outlet property="transTable" destination="PXc-Tb-cbl" id="Cjm-It-Pgo"/>
                     </connections>
                 </viewController>
@@ -608,13 +609,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Edit Transaction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAC-u1-Ges">
-                                <rect key="frame" x="120" y="54" width="175" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="22"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nr2-KD-lD5">
                                 <rect key="frame" x="48" y="200" width="96" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -655,7 +649,7 @@
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YkL-Rt-usq">
-                                <rect key="frame" x="0.0" y="615" width="47" height="202"/>
+                                <rect key="frame" x="0.0" y="615" width="47" height="227"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
@@ -706,20 +700,22 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EA8-S4-jlC">
-                                <rect key="frame" x="0.0" y="816" width="414" height="26"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="26"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TFJ-fp-F3P">
-                                <rect key="frame" x="0.0" y="166" width="414" height="26"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bdd-HE-2yf">
+                                <rect key="frame" x="0.0" y="0.0" width="14" height="227"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Dt-W7-tjy">
-                                <rect key="frame" x="391" y="166" width="23" height="651"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="View &amp; Edit Transaction" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QAC-u1-Ges">
+                                <rect key="frame" x="80" y="48" width="254" height="27"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
+                                <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="22"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <viewLayoutGuide key="safeArea" id="jz6-on-xmR"/>
@@ -737,8 +733,7 @@
                         <outletCollection property="sideViews" destination="FH8-2K-bzq" collectionClass="NSMutableArray" id="ZJZ-ky-fJc"/>
                         <outletCollection property="sideViews" destination="YkL-Rt-usq" collectionClass="NSMutableArray" id="9am-Ah-gnQ"/>
                         <outletCollection property="sideViews" destination="EA8-S4-jlC" collectionClass="NSMutableArray" id="qeT-XA-d2o"/>
-                        <outletCollection property="sideViews" destination="TFJ-fp-F3P" collectionClass="NSMutableArray" id="R8r-Az-QWr"/>
-                        <outletCollection property="sideViews" destination="0Dt-W7-tjy" collectionClass="NSMutableArray" id="M8K-HS-T1K"/>
+                        <outletCollection property="sideViews" destination="bdd-HE-2yf" collectionClass="NSMutableArray" id="AZn-C0-ZKI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="naI-wr-46R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
