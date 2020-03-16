@@ -92,6 +92,43 @@ public class DataManager {
     var goals = [Goal]()
     var transactions = [String : [Transaction]]()
     
+    func getOrderedTransactionsForCategory(category: String) -> [Transaction] {
+        let formatter = DateFormatter()
+        let sms = formatter.shortMonthSymbols
+        var keys = Array(transactions.keys)
+        var ts = [Transaction]()
+        keys.sort {
+            // Sort 2 datestamps in order of oldest-first
+            let lhs = ($0.prefix(4), $0.suffix(3))
+            let rhs = ($1.prefix(4), $1.suffix(3))
+            
+            if lhs.0 < rhs.0 { // Ex: 2008 vs 2020
+                return true
+            }
+            else if lhs.0 == rhs.0 {
+                let lmonth = sms!.firstIndex(of: String(lhs.1))!
+                let rmonth = sms!.firstIndex(of: String(rhs.1))!
+                
+                return lmonth < rmonth // Ex: 2020 Jan vs 2020 Feb -> true
+            }
+            else { // Ex: 2020 vs 2019
+                return false
+            }
+        }
+        
+        // Now traverse in-order
+        for key in keys {
+            let keyTrans = transactions[key]!
+            for t in keyTrans {
+                if t.category == category {
+                    ts.append(t)
+                }
+            }
+        }
+        
+        return ts
+    }
+    
     // MARK: - Load & Store
     func saveData() {
         let defaults = UserDefaults.standard
