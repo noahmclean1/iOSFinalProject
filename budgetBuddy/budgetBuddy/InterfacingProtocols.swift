@@ -19,6 +19,7 @@ protocol NewGoalDelegate: class {
 
 protocol NewTransDelegate: class {
     func reloadTrans() -> Void
+    func filterTrans(year: Int, month: Int) -> Void
 }
 
 

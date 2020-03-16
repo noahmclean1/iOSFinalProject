@@ -15,6 +15,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy MMM"
+        
+        // Set the current date
+        DataManager.allData.curStamp = formatter.string(from: Date())
+        
+        // Load in all saved user data
         DataManager.allData.loadData()
         
         return true

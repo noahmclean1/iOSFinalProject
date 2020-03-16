@@ -95,7 +95,7 @@ class GoalDetailViewController: UIViewController, UITextFieldDelegate {
     func updatePageValues() {
         totalGoal.text = "$\(goal!.amount)"
         spentSoFar.text = "$\(goal!.spentSoFar)"
-        percentage.text = "\(goal!.spentSoFar/goal!.amount*100.0)%"
+        percentage.text = String(format: "%.2f" , goal!.spentSoFar/goal!.amount*100.0) + "%"
         bigName.text = "\(goal!.category)"
         editTotalGoal.isHidden = true
     }

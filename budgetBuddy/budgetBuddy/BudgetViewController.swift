@@ -159,6 +159,9 @@ extension BudgetViewController: UIPopoverPresentationControllerDelegate {
 
 extension BudgetViewController: CPTPieChartDelegate, CPTPieChartDataSource {
     func numberOfRecords(for plot: CPTPlot) -> UInt {
+        if globalData.goals.count < 2 { // Prevent an ugly glitchy graph
+            return 0
+        }
         return UInt(globalData.goals.count)
     }
     

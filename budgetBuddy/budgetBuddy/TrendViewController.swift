@@ -13,6 +13,8 @@ class TrendViewController: UIViewController {
     @IBOutlet weak var bigTitle: UILabel!
     @IBOutlet weak var catPicker: UIPickerView!
     
+    var category: Goal?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

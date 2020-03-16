@@ -11,11 +11,18 @@ import UIKit
 class TransactionViewController: UIViewController {
 
     @IBOutlet weak var transTable: UITableView!
+    @IBOutlet weak var dateLabel: UILabel!
     
     let globalData = DataManager.allData
+    let formatter = DateFormatter()
+    var setDate: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        formatter.dateFormat = "yyyy MMM"
+        setDate = formatter.string(from: Date())
+        dateLabel.text = setDate
         
         transTable.delegate = self
         transTable.dataSource = self
@@ -41,16 +48,23 @@ class TransactionViewController: UIViewController {
         }
         else if segue.identifier == "editTrans" {
             if let dest = segue.destination as? EditTransactionViewController {
-                // Necessary protocol for handling new transaction additions
+                let cell = sender as! TransactionTableViewCell
+                
+                dest.trans = cell.transaction
+                dest.col = findColorForTrans(trans: cell.transaction!)
                 dest.delegate = self
             }
         }
+        else if segue.identifier == "filterPop" {
+            segue.destination.preferredContentSize = CGSize(width: 250, height: 300)
+            if let dest = segue.destination as? FilterViewController {
+                dest.delegate = self
+            }
+            if let presentationController = segue.destination.popoverPresentationController { // 1
+                presentationController.delegate = self // 2
+            }
+        }
     }
-    
-    @IBAction func chooseTimeframe(_ sender: Any) {
-        
-    }
-    
     
     // MARK: - Misc Helper Functions
     func stringifyDate(date: Date) -> String {
@@ -63,7 +77,6 @@ class TransactionViewController: UIViewController {
 
     func findColorForTrans(trans: Transaction) -> UIColor {
         let goals = globalData.goals
-        print(trans.category)
         for goal in goals {
             if goal.category == trans.category {
                 return goal.color!
@@ -80,12 +93,17 @@ class TransactionViewController: UIViewController {
 extension TransactionViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return globalData.transactions.count
+        if let t = globalData.transactions[setDate!] {
+            return t.count
+        }
+        else {
+            return 0
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "transaction") as! TransactionTableViewCell
-        let trans = globalData.transactions[indexPath.row]
+        let trans = globalData.transactions[setDate!]![indexPath.row]
         cell.transaction = trans
         
         cell.category.text = trans.category
@@ -130,5 +148,23 @@ extension TransactionViewController: NewTransDelegate {
     func reloadTrans() {
         // TODO reload graph as well
         transTable.reloadData()
+        dateLabel.text = setDate
     }
+    
+    func filterTrans(year: Int, month: Int) {
+        var dc = DateComponents()
+        var realMonth = month
+        dc.year = year
+        if month == 11 {
+            realMonth = 0
+        }
+        dc.month = realMonth + 1
+        dc.day = 1
+        let cal = Calendar.current
+                
+        setDate = formatter.string(from: cal.date(from: dc)!)
+        
+        reloadTrans()
+    }
+       
 }

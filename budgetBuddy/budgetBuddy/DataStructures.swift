@@ -39,7 +39,7 @@ class Transaction: Equatable {
     var amount: Double
     var category: String
     let date: Date
-    let location: String?
+    var location: String?
     
     init(amount: Double, category: String, date: Date, location: String?) {
         self.amount = amount
@@ -87,9 +87,10 @@ public class DataManager {
     // We're sharing this data across all VCs
     public static let allData = DataManager()
     
+    var curStamp: String?
     var totalBudget:Double = 0.0
     var goals = [Goal]()
-    var transactions = [Transaction]()
+    var transactions = [String : [Transaction]]()
     
     // MARK: - Load & Store
     func saveData() {
@@ -110,14 +111,16 @@ public class DataManager {
         
         defaults.set(savingList, forKey: "goals")
         
-        for t in transactions {
-            let tdict = [
-                "amount": t.amount,
-                "category": t.category,
-                "date": t.date,
-                "location": t.location ?? ""
-                ] as [String : Any]
-            tList.append(tdict)
+        for (_, transList) in transactions {
+            for t in transList {
+                let tdict = [
+                    "amount": t.amount,
+                    "category": t.category,
+                    "date": t.date,
+                    "location": t.location ?? ""
+                    ] as [String : Any]
+                tList.append(tdict)
+            }
         }
         
         defaults.set(tList, forKey: "transactions")
@@ -177,9 +180,11 @@ public class DataManager {
                 
                 if oldGoal.category != category {
                     // Change any relevant transactions TODO
-                    for t in transactions {
-                        if t.category == category {
-                            t.category = goal.category
+                    for (_, tList) in transactions {
+                        for t in tList {
+                            if t.category == category {
+                                t.category = goal.category
+                            }
                         }
                     }
                     
@@ -197,7 +202,11 @@ public class DataManager {
             if goal.category == category {
                 totalBudget -= goal.amount
                 
-                transactions = transactions.filter { $0.category != category }
+                for (_, var tList) in transactions {
+                    tList = tList.filter { $0.category != category }
+                }
+                
+                //transactions = transactions.filter { $0.category != category }
                 
                 break
             }
@@ -209,27 +218,75 @@ public class DataManager {
     // MARK: - Transaction Modification
     
     func addTrans(trans: Transaction) {
-        transactions.append(trans)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy MMM"
+        let dateStamp = formatter.string(from: trans.date)
+        var ind = 0
+        
+        // Update goal information
         for goal in goals {
             if goal.category == trans.category {
-                goal.spentSoFar += trans.amount
                 
-                break
-            }
-        }
-    }
-    
-    func removeTrans(trans: Transaction) {
-        for goal in goals {
-            // Alter any tied-up data
-            if goal.category == trans.category {
-                goal.spentSoFar -= trans.amount
+                if formatter.string(from: trans.date) == curStamp! {
+                    goal.spentSoFar += trans.amount
+                }
                 
                 break
             }
         }
         
-        // Fully remove the transaction
-        transactions = transactions.filter { $0 != trans }
+        // Insert transaction into proper bucket-list
+        if let tList = transactions[dateStamp] {
+            for (index,t) in tList.enumerated() {
+                if t.date > trans.date {
+                    ind = index
+                    break
+                }
+            }
+            
+        }
+        else {
+            transactions[dateStamp] = [trans]
+            return
+        }
+        
+        transactions[dateStamp]!.insert(trans, at: ind)
+    }
+    
+    func removeTrans(trans: Transaction) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy MMM"
+        
+        for goal in goals {
+            // Alter any tied-up data
+            if goal.category == trans.category {
+                
+                if formatter.string(from: trans.date) == curStamp! {
+                    goal.spentSoFar -= trans.amount
+                }
+                
+                break
+            }
+        }
+        
+        // Fully remove the transaction by finding it first
+        let dateStamp = formatter.string(from: trans.date)
+        
+        guard let tList = transactions[dateStamp] else {
+            print("Error: removing transaction month not found")
+            return
+        }
+        
+        guard let ind = tList.firstIndex(of: trans) else {
+            print("Error: removing transaction not in list")
+            return
+        }
+        
+        transactions[dateStamp]!.remove(at: ind)
+    }
+    
+    func replaceTransaction(oldTrans: Transaction, newTrans: Transaction) {
+        removeTrans(trans: oldTrans)
+        addTrans(trans: newTrans)
     }
 }
