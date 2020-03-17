@@ -260,6 +260,15 @@ extension TransactionViewController: UITableViewDelegate, UITableViewDataSource 
         cell.setSelected(false, animated: true)
     }
     
+    // Add swipe deletion
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let trans = globalData.transactions[setDate!]![indexPath.row]
+            globalData.removeTrans(trans: trans)
+            reloadTrans()
+        }
+    }
+    
 }
 
 // MARK: - Popover Delegate Extension
