@@ -56,14 +56,30 @@ class TrendViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        if globalData.goals.count == 0 {
+            return
+        }
         reloadPage()
     }
     
     func reloadPage() {
         // Grab relevant data
-        let cat = category!.category
-        let transactions = globalData.transactions[timeStamp!]!
-        transactionsCurrent = transactions.filter { $0.category == cat }
+        var cat = ""
+        if category == nil{
+            cat = globalData.goals[0].category
+        } else {
+            cat = category!.category
+        }
+        if timeStamp == nil {
+            timeStamp = formatter.string(from: Date())
+        }
+        
+        let transactions = globalData.transactions[timeStamp!]
+        if transactions == nil {
+            return
+        }
+        
+        transactionsCurrent = transactions!.filter { $0.category == cat }
         totalTransactions = globalData.getOrderedTransactionsForCategory(category: cat)
         
         // Style

@@ -170,9 +170,15 @@ public class DataManager {
         let count = defaults.integer(forKey: "launch")
         
         if count < 2 {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "MM/dd/yyy"
+            if count == 0 {
+                defaults.set(formatter.string(from: Date()), forKey: "FIRST_USAGE")
+            }
             defaults.set(count + 1, forKey: "launch")
         }
         else if count == 2 {
+            defaults.set(count + 1, forKey: "launch")
             SKStoreReviewController.requestReview()
         }
         
