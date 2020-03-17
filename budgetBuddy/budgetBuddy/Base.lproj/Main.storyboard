@@ -168,7 +168,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a New Budget Goal" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2d0-NI-3zS">
-                                <rect key="frame" x="54" y="8" width="192" height="21"/>
+                                <rect key="frame" x="54" y="8.5" width="192" height="20.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20.5" id="nzw-Qd-3cl"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="192" id="wEZ-gR-Sbe"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -177,6 +181,7 @@
                                 <rect key="frame" x="187" y="44" width="97" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="97" id="ENk-oL-hlU"/>
+                                    <constraint firstAttribute="height" constant="35" id="ERV-3g-RYb"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -232,8 +237,8 @@
                             <constraint firstItem="6S7-td-AUi" firstAttribute="centerY" secondItem="kFw-9e-5wM" secondAttribute="centerY" id="0fI-7S-Ket"/>
                             <constraint firstItem="xKF-Uw-ryv" firstAttribute="centerX" secondItem="kFw-9e-5wM" secondAttribute="centerX" id="4bN-74-CEd"/>
                             <constraint firstItem="6S7-td-AUi" firstAttribute="leading" secondItem="kFw-9e-5wM" secondAttribute="trailing" constant="35" id="57V-dD-nrC"/>
-                            <constraint firstItem="2d0-NI-3zS" firstAttribute="top" secondItem="xG9-Ye-O3i" secondAttribute="topMargin" constant="-36" id="7UC-eS-r28"/>
                             <constraint firstItem="g1v-5g-Nfd" firstAttribute="centerY" secondItem="3Fn-RY-FjG" secondAttribute="centerY" id="Ay5-5n-xBO"/>
+                            <constraint firstItem="2d0-NI-3zS" firstAttribute="leading" secondItem="xG9-Ye-O3i" secondAttribute="leading" constant="54" id="CYx-qO-Vlj"/>
                             <constraint firstItem="6S7-td-AUi" firstAttribute="top" secondItem="2d0-NI-3zS" secondAttribute="bottom" constant="15" id="Dom-ek-aut"/>
                             <constraint firstItem="6S7-td-AUi" firstAttribute="trailing" secondItem="sKe-av-fkc" secondAttribute="trailing" id="EtV-iF-TJU"/>
                             <constraint firstItem="C8D-WZ-Zi6" firstAttribute="top" secondItem="6S7-td-AUi" secondAttribute="bottom" constant="8" symbolic="YES" id="GPS-ZZ-hYN"/>

@@ -249,15 +249,15 @@ public class DataManager {
             if goal.category == category {
                 totalBudget -= goal.amount
                 
-                for (_, var tList) in transactions {
-                    tList = tList.filter { $0.category != category }
+                for (datestamp, tList) in transactions {
+                    transactions[datestamp] = tList.filter { $0.category != category }
                 }
                 
-                //transactions = transactions.filter { $0.category != category }
                 
                 break
             }
         }
+        
         // Actually delete the goal
         goals = goals.filter { $0.category != category}
     }

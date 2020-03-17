@@ -74,7 +74,7 @@ class TrendViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
         // Content
         
         bigTitle.text = "Statistics about \(cat) Budget"
-        dailySpending.text = String(format: "%.2f", calcDailySpending()) + "%"
+        dailySpending.text = "$" + String(format: "%.2f", calcDailySpending())
         transSize.text = "$" + String(format: "%.2f", averageTransaction())
         ranking.text = "\(catRanking(category: category!))"
         percentage.text = String(format: "%.2f", budgetPercent(category: category!)) + "%"
