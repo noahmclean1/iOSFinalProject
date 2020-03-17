@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import StoreKit
 
 // MARK: - Important Data Structures
 class Goal {
@@ -165,6 +166,15 @@ public class DataManager {
     
     func loadData() {
         let defaults = UserDefaults.standard
+        
+        let count = defaults.integer(forKey: "launch")
+        
+        if count < 2 {
+            defaults.set(count + 1, forKey: "launch")
+        }
+        else if count == 2 {
+            SKStoreReviewController.requestReview()
+        }
         
         var goalArray = defaults.array(forKey: "goals") as? [[String : Any]]
         var tArray = defaults.array(forKey: "transactions") as? [[String : Any]]

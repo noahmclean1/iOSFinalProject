@@ -8,6 +8,38 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Launch View Controller-->
+        <scene sceneID="5se-zB-Bi3">
+            <objects>
+                <viewController id="NX8-sJ-7LS" customClass="LaunchViewController" customModule="budgetBuddy" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Nl7-p5-IoK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4lc-1a-Bbo">
+                                <rect key="frame" x="0.0" y="44" width="414" height="807"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="VERSION" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IfK-qY-pOF">
+                                <rect key="frame" x="171" y="808" width="72" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="czC-rT-4Ct"/>
+                    </view>
+                    <connections>
+                        <outlet property="backImage" destination="4lc-1a-Bbo" id="uIF-L3-W9g"/>
+                        <outlet property="version" destination="IfK-qY-pOF" id="XRl-9Y-Skl"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8UE-Ig-4UE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-339.13043478260875" y="-623.4375"/>
+        </scene>
         <!--Budget View Controller-->
         <scene sceneID="hNz-n2-bh7">
             <objects>
@@ -117,6 +149,7 @@
                         <viewLayoutGuide key="safeArea" id="PQr-Ze-W5v"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="chart.pie" catalog="system" id="acW-dT-cKf"/>
+                    <navigationItem key="navigationItem" id="Bs7-h6-c2l"/>
                     <connections>
                         <outlet property="budgetGoals" destination="mPN-AP-fIf" id="TdU-S4-yav"/>
                         <outlet property="containingView" destination="MK7-JZ-nhl" id="KDC-yl-kdL"/>

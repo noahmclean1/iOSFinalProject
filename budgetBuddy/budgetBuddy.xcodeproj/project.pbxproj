@@ -26,6 +26,8 @@
 		02BC9204240DAEA400A4C124 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02BC9203240DAEA400A4C124 /* Assets.xcassets */; };
 		02BC9207240DAEA400A4C124 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 02BC9205240DAEA400A4C124 /* LaunchScreen.storyboard */; };
 		02BC920F240DAF6600A4C124 /* TrendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BC920E240DAF6600A4C124 /* TrendViewController.swift */; };
+		02E2A3CF2421645F000AC0EC /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E2A3CE2421645F000AC0EC /* LaunchViewController.swift */; };
+		02E2A3D124216B0C000AC0EC /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 02E2A3D024216B0C000AC0EC /* Settings.bundle */; };
 		2D9084C9774C5C7DAE238A3A /* Pods_budgetBuddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE553C0E9181275A593A4F10 /* Pods_budgetBuddy.framework */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +54,8 @@
 		02BC9206240DAEA400A4C124 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		02BC9208240DAEA400A4C124 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02BC920E240DAF6600A4C124 /* TrendViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendViewController.swift; sourceTree = "<group>"; };
+		02E2A3CE2421645F000AC0EC /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		02E2A3D024216B0C000AC0EC /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		ADA2CCDF43005F9D6BDBEE49 /* Pods-budgetBuddy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-budgetBuddy.release.xcconfig"; path = "Target Support Files/Pods-budgetBuddy/Pods-budgetBuddy.release.xcconfig"; sourceTree = "<group>"; };
 		AE553C0E9181275A593A4F10 /* Pods_budgetBuddy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_budgetBuddy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D747E51980FF80C3B45740A9 /* Pods-budgetBuddy.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-budgetBuddy.debug.xcconfig"; path = "Target Support Files/Pods-budgetBuddy/Pods-budgetBuddy.debug.xcconfig"; sourceTree = "<group>"; };
@@ -103,8 +107,10 @@
 				022ADF25241FD88F006072AE /* FilterViewController.swift */,
 				022D34D3241ED31200592D61 /* EditTransactionViewController.swift */,
 				02BC920E240DAF6600A4C124 /* TrendViewController.swift */,
+				02E2A3CE2421645F000AC0EC /* LaunchViewController.swift */,
 				024121AB241C2A6600C78EFB /* InterfacingProtocols.swift */,
 				024AC037241AEAF400DC34DD /* DataStructures.swift */,
+				02E2A3D024216B0C000AC0EC /* Settings.bundle */,
 				02BC9200240DAEA300A4C124 /* Main.storyboard */,
 				020F2212241D572600439B16 /* colors.plist */,
 				02BC9203240DAEA400A4C124 /* Assets.xcassets */,
@@ -194,6 +200,7 @@
 			files = (
 				020F2213241D572600439B16 /* colors.plist in Resources */,
 				02BC9207240DAEA400A4C124 /* LaunchScreen.storyboard in Resources */,
+				02E2A3D124216B0C000AC0EC /* Settings.bundle in Resources */,
 				02BC9204240DAEA400A4C124 /* Assets.xcassets in Resources */,
 				02BC9202240DAEA300A4C124 /* Main.storyboard in Resources */,
 			);
@@ -263,6 +270,7 @@
 				022D34D0241E8DF400592D61 /* TransactionTableViewCell.swift in Sources */,
 				022D34D2241E93B000592D61 /* NewTransactionViewController.swift in Sources */,
 				02BC91FB240DAEA300A4C124 /* SceneDelegate.swift in Sources */,
+				02E2A3CF2421645F000AC0EC /* LaunchViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,6 +422,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nmclean.budgetBuddy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -433,6 +442,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = nmclean.budgetBuddy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
