@@ -13,11 +13,22 @@ class TrendViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
 
     @IBOutlet weak var bigTitle: UILabel!
     @IBOutlet weak var catPicker: UIPickerView!
-    @IBOutlet weak var graphHost: CPTGraphHostingView!
+    @IBOutlet var colorViews: [UIView]!
+    @IBOutlet var containerViews: [UIView]!
+
+    @IBOutlet weak var dailySpending: UILabel!
+    @IBOutlet weak var transSize: UILabel!
+    @IBOutlet weak var ranking: UILabel!
+    @IBOutlet weak var percentage: UILabel!
+    @IBOutlet weak var expensiveLoc: UILabel!
+    @IBOutlet weak var dueToGoOver: UILabel!
     
     var category: Goal?
     let globalData = DataManager.allData
-    let burnGraph = CPTXYGraph(frame: .zero)
+    var timeStamp: String?
+    let formatter = DateFormatter()
+    var transactionsCurrent = [Transaction]()
+    var totalTransactions = [Transaction]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,19 +44,133 @@ class TrendViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
         catPicker.dataSource = self
         catPicker.reloadAllComponents()
         
-        bigTitle.text = "Statistics about \(category!.category) Budget"
+        // Make the boxes pretty
+        for view in containerViews {
+            view.layer.borderColor = CGColor(srgbRed: 0.0, green: 0.0, blue: 0.0, alpha: 1)
+            view.layer.borderWidth = 1
+        }
         
-        let ts = globalData.getOrderedTransactionsForCategory(category: category!.category)
+        formatter.dateFormat = "yyyy MMM"
+        timeStamp = formatter.string(from: Date())
         
-        initPlot(transactions: ts)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        reloadPage()
     }
     
     func reloadPage() {
-        let transactions = globalData.getOrderedTransactionsForCategory(category: category!.category)
+        // Grab relevant data
+        let cat = category!.category
+        let transactions = globalData.transactions[timeStamp!]!
+        transactionsCurrent = transactions.filter { $0.category == cat }
+        totalTransactions = globalData.getOrderedTransactionsForCategory(category: cat)
         
-        // TODO reset any statistics labels
+        // Style
+        for view in colorViews {
+            view.backgroundColor = category!.color
+        }
         
-        initPlot(transactions: transactions)
+        // Content
+        
+        bigTitle.text = "Statistics about \(cat) Budget"
+        dailySpending.text = String(format: "%.2f", calcDailySpending()) + "%"
+        transSize.text = "$" + String(format: "%.2f", averageTransaction())
+        ranking.text = "\(catRanking(category: category!))"
+        percentage.text = String(format: "%.2f", budgetPercent(category: category!)) + "%"
+        expensiveLoc.text = "\(highestLoc(category: cat) ?? "None")"
+        dueToGoOver.text = goingOver()
+        
+    }
+    
+    // MARK: - Calculation Functions
+    
+    func calcDailySpending() -> Double {
+        let cal = Calendar.current
+        let day = cal.component(.day, from: Date())
+        
+        var sum = 0.0
+        for t in transactionsCurrent {
+            sum += t.amount
+        }
+        
+        return (sum/Double(day))
+    }
+    
+    func averageTransaction() -> Double {
+        var sum = 0.0
+        var total = 0
+        for t in transactionsCurrent {
+            sum += t.amount
+            total += 1
+        }
+        return (sum/Double(total))
+    }
+    
+    func catRanking(category: Goal) -> Int {
+        let amt = category.amount
+        var rank = 1
+        for g in globalData.goals {
+            if g.amount >= amt && g.category != category.category {
+                rank += 1
+            }
+        }
+        return rank
+    }
+    
+    func budgetPercent(category: Goal) -> Double {
+        var sum = 0.0
+        for g in globalData.goals {
+            sum += g.amount
+        }
+        
+        return (category.amount/sum * 100.0)
+    }
+    
+    func highestLoc(category: String) -> String? {
+        var counter = [String: Int]()
+        for t in transactionsCurrent {
+            if let soFar = counter[t.location ?? ""] {
+                counter[t.location ?? ""] = soFar + 1
+            }
+        }
+        
+        var mloc = ""
+        var num = 0
+        for (loc, val) in counter {
+            if val > num {
+                mloc = loc
+                num = val
+            }
+        }
+        
+        if mloc == "" {
+            return nil
+        }
+        else {
+            return mloc
+        }
+    }
+    
+    func goingOver() -> String {
+        let cal = Calendar.current
+        let day = cal.component(.day, from: Date())
+        let range = cal.range(of: .day, in: .month, for: Date())
+        let daily = category!.spentSoFar / Double(day)
+        let projected = daily * Double(range!.count)
+        
+        if projected > category!.amount {
+            dueToGoOver.textColor = .red
+            return "Spending Above Your Goal"
+        }
+        else if projected == category!.amount {
+            dueToGoOver.textColor = .black
+            return "Spending Exactly Your Goal!"
+        }
+        else {
+            dueToGoOver.textColor = .green
+            return "Spending Under Your Goal"
+        }
     }
     
     // MARK: - PickerView Delegate Functions
@@ -67,76 +192,5 @@ class TrendViewController: UIViewController, UIPickerViewDelegate, UIPickerViewD
         category = goal
         reloadPage()
     }
-    
-    // MARK: - Graph Initialization
-    func initPlot(transactions: [Transaction]) {
-        configureHostView()
-        configureGraph()
-        configureChart()
-        configureAxes()
-    }
-    
-    func configureHostView() {
-        graphHost.allowPinchScaling = false
-    }
-    
-    func configureGraph() {
-        // Create graph from theme
-        burnGraph.apply(CPTTheme(named: .darkGradientTheme))
-
-        let hostingView = graphHost as! CPTGraphHostingView
-        hostingView.hostedGraph = burnGraph
-
-        // Paddings
-        burnGraph.paddingLeft   = 10.0
-        burnGraph.paddingRight  = 10.0
-        burnGraph.paddingTop    = 10.0
-        burnGraph.paddingBottom = 10.0
-    }
-    
-    func configureChart() {
-        // Plot space
-        let plotSpace = burnGraph.defaultPlotSpace as! CPTXYPlotSpace
-        plotSpace.allowsUserInteraction = true
-        plotSpace.yRange = CPTPlotRange(location:1.0, length:2.0)
-        plotSpace.xRange = CPTPlotRange(location:1.0, length:3.0)
-
-    }
-    
-    func configureAxes() {
-        // Axes
-        let axisSet = burnGraph.axisSet as! CPTXYAxisSet
-
-        if let x = axisSet.xAxis {
-            x.majorIntervalLength   = 0.5
-            x.orthogonalPosition    = 2.0
-            x.minorTicksPerInterval = 2
-            x.labelExclusionRanges  = [
-                CPTPlotRange(location: 0.99, length: 0.02),
-                CPTPlotRange(location: 1.99, length: 0.02),
-                CPTPlotRange(location: 2.99, length: 0.02)
-            ]
-        }
-
-        if let y = axisSet.yAxis {
-            y.majorIntervalLength   = 0.5
-            y.minorTicksPerInterval = 5
-            y.orthogonalPosition    = 2.0
-            y.labelExclusionRanges  = [
-                CPTPlotRange(location: 0.99, length: 0.02),
-                CPTPlotRange(location: 1.99, length: 0.02),
-                CPTPlotRange(location: 3.99, length: 0.02)
-            ]
-            y.delegate = self
-        }
-    }
-
 }
 
-extension TrendViewController: CPTScatterPlotDataSource {
-    
-    func numberOfRecords(for plot: CPTPlot) -> UInt {
-        return UInt(0)
-    }
-    
-}
